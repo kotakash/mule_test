@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a710cd21-91f3-451a-874a-0b1c98fac1d0" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="261a8992-744e-458e-a158-00f44d2b023f" >
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="91a204a4-661d-4f52-ace1-80c7878e3ea7" >
+		<http:request-connection host="localhost" port="8082" />
+	</http:request-config>
+	<flow name="mainFlow" doc:id="aee7db22-dc1a-46f1-ba6f-b84ceea8ae18" >
+		<http:listener doc:name="Listener" doc:id="02c9dff4-b4ad-4c94-88f5-fba50f361814" config-ref="HTTP_Listener_config" path="/main">
+			<http:response statusCode="#[vars.httpStatus]" />
+			<http:error-response statusCode="#[vars.httpStatus]" />
+		</http:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="d02815e1-4f15-47c9-b65c-2f0669c24762" message="#[payload]" />
+		<set-payload value='#[payload ++ "End"]' doc:name="Set Payload" doc:id="f0a6bc2b-f134-420d-8c2b-d1a43578093e" />
+	</flow>
+</mule>
